@@ -14,11 +14,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -161,7 +163,7 @@ fun TipCalcScreen(modifier: Modifier = Modifier) {
                     modifier = Modifier.width(62.dp)
                 ) {
                     RadioButton(
-                        selected = false,
+                        selected = discount == percent,
                         onClick = null // пользователь не может нажать, выбор только программный
                     )
                     Text(text = "$percent%", fontSize = 20.sp)
@@ -174,5 +176,23 @@ fun TipCalcScreen(modifier: Modifier = Modifier) {
                 }
             }
         }
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // Расчёт
+        val sum = amount.toDoubleOrNull() ?: 0.0
+        val tipPercent = tip.roundToInt()
+        val tipValue = sum * tipPercent / 100
+        val discountValue = sum * discount / 100
+        val total = sum + tipValue - discountValue
+
+        Text(text = "Чаевые ($tipPercent%%): %.2f".format(tipValue), fontSize = 18.sp)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = "Скидка ($discount%%): %.2f".format(discountValue), fontSize = 18.sp)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Итого: %.2f".format(total),
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
