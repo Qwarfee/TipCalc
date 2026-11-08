@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,6 +62,13 @@ fun InputField(
     )
 }
 
+// Варианты скидки и подписи под радиокнопками
+val discountOptions = listOf(
+    3 to "1-2 блюда",
+    5 to "3-5 блюд",
+    7 to "6-10 блюд",
+    10 to "более 10"
+)
 @Composable
 fun TipCalcScreen(modifier: Modifier = Modifier) {
     var amount by remember { mutableStateOf("") }
@@ -127,6 +135,32 @@ fun TipCalcScreen(modifier: Modifier = Modifier) {
         ) {
             Text(text = "0", fontSize = 20.sp)
             Text(text = "25", fontSize = 20.sp)
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Скидка: группа радиокнопок
+        Row(verticalAlignment = Alignment.Top) {
+            Text(text = "Скидка:", fontSize = 20.sp)
+            Spacer(modifier = Modifier.width(8.dp))
+            discountOptions.forEach { (percent, dishesText) ->
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.width(62.dp)
+                ) {
+                    RadioButton(
+                        selected = false,
+                        onClick = null // пользователь не может нажать, выбор только программный
+                    )
+                    Text(text = "$percent%", fontSize = 20.sp)
+                    Text(
+                        text = dishesText,
+                        fontSize = 11.sp,
+                        color = Color.Gray,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
         }
     }
 }
