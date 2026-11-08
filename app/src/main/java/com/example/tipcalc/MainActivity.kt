@@ -65,6 +65,7 @@ fun InputField(
 fun TipCalcScreen(modifier: Modifier = Modifier) {
     var amount by remember { mutableStateOf("") }
     var dishes by remember { mutableStateOf("") }
+    var tip by remember { mutableFloatStateOf(0f) }
 
     Column(
         modifier = modifier
@@ -110,6 +111,22 @@ fun TipCalcScreen(modifier: Modifier = Modifier) {
                 width = 48.dp,
                 keyboardType = KeyboardType.Number
             )
+        }
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // Чаевые: слайдер от 0 до 25
+        Text(text = "Чаевые:", fontSize = 12.sp)
+        Slider(
+            value = tip,
+            onValueChange = { tip = it },
+            valueRange = 0f..25f
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(text = "0", fontSize = 20.sp)
+            Text(text = "25", fontSize = 20.sp)
         }
     }
 }
