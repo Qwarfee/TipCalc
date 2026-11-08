@@ -69,11 +69,23 @@ val discountOptions = listOf(
     7 to "6-10 блюд",
     10 to "более 10"
 )
+
+// Скидка по количеству блюд: 1-2 -> 3%, 3-5 -> 5%, 6-10 -> 7%, больше 10 -> 10%
+fun discountFor(dishes: Int): Int = when {
+    dishes in 1..2 -> 3
+    dishes in 3..5 -> 5
+    dishes in 6..10 -> 7
+    dishes > 10 -> 10
+    else -> 0
+}
 @Composable
 fun TipCalcScreen(modifier: Modifier = Modifier) {
     var amount by remember { mutableStateOf("") }
     var dishes by remember { mutableStateOf("") }
     var tip by remember { mutableFloatStateOf(0f) }
+
+    // Радиокнопка выбирается программно по количеству блюд
+    val discount = discountFor(dishes.toIntOrNull() ?: 0)
 
     Column(
         modifier = modifier
